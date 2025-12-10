@@ -22,3 +22,7 @@ wss.on("connection", function(socket) {
     socket.send("Hello! Message from server!");
     
 });
+
+server.listen(8080, function() {
+    console.log((new Date().toISOString) + "Server is listening n port 8080");
+});
