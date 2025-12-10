@@ -1,0 +1,24 @@
+import WebSocket, {WebSocketServer} from 'ws';
+import http from 'http';
+
+const server = http.createServer(function(request: any, response: any) {
+    console.log((new Date().toISOString) + 'Received request for ' + request.url);
+    response.end("Hi there!");
+});
+
+const wss = new WebSocketServer({server});
+
+wss.on("connection", function(socket) {
+
+    socket.on("error", console.error);
+    socket.on("message", function message(data, isBinary) {
+        wss.clients.forEach(function each(client) {
+            if(client.readyState === WebSocket.OPEN) {
+                client.send(data, {binary: isBinary});
+            }
+        });
+    });
+
+    socket.send("Hello! Message from server!");
+    
+});
