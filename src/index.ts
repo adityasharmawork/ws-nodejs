@@ -2,15 +2,14 @@ import WebSocket, {WebSocketServer} from 'ws';
 import http from 'http';
 
 const server = http.createServer(function(request: any, response: any) {
-    console.log((new Date().toISOString) + 'Received request for ' + request.url);
+    console.log((new Date().toISOString()) + ' Received request for ' + request.url);
     response.end("Hi there!");
 });
 
 const wss = new WebSocketServer({server});
 
 wss.on("connection", function(socket) {
-
-    socket.on("error", console.error);
+    socket.on("error", (err) => console.error(err));
     socket.on("message", function message(data, isBinary) {
         wss.clients.forEach(function each(client) {
             if(client.readyState === WebSocket.OPEN) {
@@ -20,9 +19,8 @@ wss.on("connection", function(socket) {
     });
 
     socket.send("Hello! Message from server!");
-    
 });
 
 server.listen(8080, function() {
-    console.log((new Date().toISOString) + "Server is listening n port 8080");
+    console.log((new Date().toISOString()) + " Server is listening on port 8080");
 });
